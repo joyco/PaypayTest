@@ -1,0 +1,117 @@
+<div class=" container mt-3">
+  <a [routerLink]="['/dashboard']" style="padding: 10px;">Dashboard</a>
+  <input type="button" value="Add Review" style="padding: 10px;" (click)="showReviewForm = true">
+  <input type="button" value="Back" style="padding: 10px;    margin-left: 10px;" *ngIf="showReviewForm"
+    (click)="showReviewForm = false">
+</div>
+
+<div class="container">
+  <div class="row" *ngIf="!showReviewForm">
+    <table class="table table-hover">
+      <thead class="text-dark text-bold">
+        <tr>
+          <th>Name</th>
+          <th>Employee code</th>
+          <th>Work performance</th>
+          <th>Goal achievement</th>
+          <th>Suggestions</th>
+          <th>Comments</th>
+          <th>Review period</th>
+          <th>Review date</th>
+          <th>Action</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of reviews ">
+          <td>{{p.emp_id.name}}</td>
+          <td>{{p.emp_id.emp_code}}</td>
+          <td>{{p.work_performance}}</td>
+          <td>{{p.goal_achivement}}</td>
+          <td>{{p.suggestions}}</td>
+          <td>{{p.comments}}</td>
+          <td>{{p.review_period}}</td>
+          <td>{{p.review_date}}</td>
+          <!-- <td>{{p.employees}}</td> -->
+          <td><a (click)="editReview(p)"><i class="fa fa-pencil"></i></a>
+            <a style="margin-left: 10px;" (click)="deleteReview(p._id)"><i class="fa fa-trash"></i></a>
+          </td>
+          <td><input type="button" value="Assign Employee" (click)="assignEmployee(p)"></td>
+
+        </tr>
+        <tr *ngIf="reviews.length === 0">
+          <td colspan="4" class="text-center">No Records Found</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="container" *ngIf="showReviewForm">
+  <div className="login-wrapper">
+    <h1>Add review</h1>
+    <form [formGroup]="reviewForm" (submit)="addReview()">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <div>
+              <label for="fullname">Employee<span class="red">*</span>:</label>
+            </div>
+            <select class="form-control" formControlName="emp_id">
+              <option *ngFor="let emp of employees" [value]="emp._id"> {{emp.name}} </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="Mobile">Work performance<span class="red">*</span> :</label>
+            <input type="text" class="form-control" formControlName="work_performance" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <div>
+              <label for="fullname">Goal Acheivement<span class="red">*</span>:</label>
+            </div>
+            <input type="text" class="form-control" formControlName="goal_achievement" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="Mobile">Suggestions<span class="red">*</span> :</label>
+            <input type="email" class="form-control" formControlName="suggestions" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="Mobile">Comments<span class="red">*</span> :</label>
+            <input type="text" class="form-control" formControlName="comments" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="Mobile">Review period<span class="red">*</span> :</label>
+            <input type="text" class="form-control" formControlName="review_period" />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="assignEmp">
+        <div class="col-md-5">
+          <ng-multiselect-dropdown [placeholder]="'Select Options'" [settings]="dropdownSettings"
+            style="border-radius: 2em !important;" [data]="dropdownList" [(ngModel)]="selectedItems"
+            [ngModelOptions]="{standalone: true}">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+</div>
